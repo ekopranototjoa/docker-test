@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: php-fpm.dockerfile
+    working_dir: /usr/share/nginx/html
+    volumes:
+      - .:/usr/share/nginx/html
+
+  web:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    working_dir: /usr/share/nginx/html
+    volumes_from:
+      - php-fpm
+    depends_on:
+      - php-fpm
+    ports:
+      - "8087:80"
